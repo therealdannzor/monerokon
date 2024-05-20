@@ -24,7 +24,6 @@ mod template {
             // 🏋️ EXERCISE 1: Initialize component with a zero counter value
             let state = Self {
                 // TODO set counter to 0
-                counter: 0,
             };
 
             Component::new(state).create()
