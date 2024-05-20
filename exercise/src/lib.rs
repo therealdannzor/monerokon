@@ -18,10 +18,9 @@ mod template {
         // TODO
     }
 
+    // 🏋️ EXERCISE 1: Initialize component with a zero counter value
     impl Monerokon {
-        /// Exercise 1: Construct the component with a u32 called `counter` initialized to 0.
         pub fn new() -> Component<Self> {
-            // 🏋️ EXERCISE 1: Initialize component with a zero counter value
             let state = Self {
                 // TODO set counter to 0
             };
@@ -29,74 +28,56 @@ mod template {
             Component::new(state).create()
         }
 
-        // 🏋️ EXERCISE 2: Implement method to return the counter value and increase the counter value by 1
+        // 🏋️ EXERCISE 2a: Implement method to return the counter value
         pub fn counter(&self) -> u32 {
             todo!()
         }
 
+        // 🏋️ EXERCISE 2b: Mutate some state! Increase the counter value by 1
         pub fn increase(&mut self) {
             todo!()
         }
     }
 
+    // Uncomment the following code block after completing exercise 2
+    /*
     impl Monerokon {
-        // /// Exercise 1: Construct the component with a u32 called `counter` initialized to 0.
-        // pub fn new() -> Component<Self> {
-        //     // 🏋️ EXERCISE 1: Initialize component with a zero counter value
-        //     let state = Self {
-        //         // TODO set counter to 0
-        //     };
-        //
-        //     Component::new(state).create()
-        // }
-        //
-        // // 🏋️ EXERCISE 2: Implement method to return the counter value and increase the counter value by 1
-        // pub fn counter(&self) -> u32 {
-        //     todo!()
-        // }
-        //
-        // pub fn increase(&mut self) {
-        //     todo!()
-        // }
-
-        /*
         pub fn new(
-            _initial_supply: Amount,
-            _confidential_initial_supply: ConfidentialOutputStatement,
+            initial_supply: Amount,
+            confidential_initial_supply: ConfidentialOutputStatement,
         ) -> Component<Self> {
-               // 🏋️ EXERCISE 3a: Create a fungible resource with an initial supply
-               // TODO
+            // 🏋️ EXERCISE 3a: Create a fungible resource with an initial supply
+            // TODO
 
-               // 🏋️ EXERCISE 5: Create a Non-Fungible resource with two NFTs in a new vault named 'nft_vault'
-               // TODO
+            // 🏋️ EXERCISE 5: Create a Non-Fungible resource with two NFTs in a new vault named 'nft_vault'
+            // TODO
 
-               // 🏋️ EXERCISE 6a: Create a confidential resource with an initial supply and add a vault to the component called 'confidential_vault'
-               // TODO
+            // 🏋️ EXERCISE 6a: Create a confidential resource with an initial supply and add a vault to the component called 'confidential_vault'
+            // TODO
 
-               let state = Self {
-                   counter: 0,
-                   // 🏋️ EXERCISE 3c: Deposit the initial tokens into a supply vault and create an empty fee vault
-                   // TODO
-               };
+            let state = Self {
+                counter: 0,
+                // 🏋️ EXERCISE 3c: Deposit the initial tokens into a supply vault and create an empty fee vault
+                // TODO
+            };
 
-               Component::new(state)
-                   .with_access_rules(
-                       ComponentAccessRules::new()
-                       // 🏋️ EXERCISE 4b: allow anyone to call the "withdraw" method
-                       // TODO
-                       //         .add_method_rule("withdraw", AccessRule::AllowAll)
-                   )
-                   .create()
+            Component::new(state)
+                // 🏋️ EXERCISE 4b: allow anyone to call the "withdraw" method
+                // .with_access_rules(
+                //     ComponentAccessRules::new()
+                // TODO
+                // )
+                .create()
         }
 
-        */
+
 
         pub fn get_balance(&self) -> Amount {
             // 🏋️ EXERCISE 3c: Return the supply vault balance
             todo!()
         }
 
-        pub fn withdraw(&mut self, fee: Bucket, amount: Amount) -> Bucket {
+        pub fn withdraw(&mut self, _fee: Bucket, _amount: Amount) -> Bucket {
             // 🏋️ EXERCISE 4a: check fee amount and deposit in the fee_vault. Withdraw requested amount from supply vault and return the Bucket.
             //                Increment the counter.
             todo!()
@@ -111,5 +92,14 @@ mod template {
             //                Increment the counter.
             todo!()
         }
+
+        pub fn counter(&self) -> u32 {
+            self.counter
+        }
+
+        pub fn increase(&mut self) {
+            self.counter += 1;
+        }
     }
+     */
 }
