@@ -20,18 +20,51 @@ mod template {
 
     impl Monerokon {
         /// Exercise 1: Construct the component with a u32 called `counter` initialized to 0.
+        pub fn new() -> Component<Self> {
+            // 🏋️ EXERCISE 1: Initialize component with a zero counter value
+            let state = Self {
+                // TODO set counter to 0
+                counter: 0,
+            };
+
+            Component::new(state).create()
+        }
+
+        // 🏋️ EXERCISE 2: Implement method to return the counter value and increase the counter value by 1
+        pub fn counter(&self) -> u32 {
+            todo!()
+        }
+
+        pub fn increase(&mut self) {
+            todo!()
+        }
+    }
+
+    impl Monerokon {
+        // /// Exercise 1: Construct the component with a u32 called `counter` initialized to 0.
+        // pub fn new() -> Component<Self> {
+        //     // 🏋️ EXERCISE 1: Initialize component with a zero counter value
+        //     let state = Self {
+        //         // TODO set counter to 0
+        //     };
+        //
+        //     Component::new(state).create()
+        // }
+        //
+        // // 🏋️ EXERCISE 2: Implement method to return the counter value and increase the counter value by 1
+        // pub fn counter(&self) -> u32 {
+        //     todo!()
+        // }
+        //
+        // pub fn increase(&mut self) {
+        //     todo!()
+        // }
+
+        /*
         pub fn new(
             _initial_supply: Amount,
             _confidential_initial_supply: ConfidentialOutputStatement,
         ) -> Component<Self> {
-            // 🏋️ EXERCISE 1: Initialize component with a zero counter value
-            let state = Self {
-                // TODO set counter to 0
-            };
-
-            Component::new(state).create()
-
-            /*
                // 🏋️ EXERCISE 3a: Create a fungible resource with an initial supply
                // TODO
 
@@ -55,17 +88,9 @@ mod template {
                        //         .add_method_rule("withdraw", AccessRule::AllowAll)
                    )
                    .create()
-            */
         }
 
-        // 🏋️ EXERCISE 2: Implement method to return the counter value and increase the counter value by 1
-        pub fn counter(&self) -> u32 {
-            self.counter
-        }
-
-        pub fn increase(&mut self) {
-            todo!()
-        }
+        */
 
         pub fn get_balance(&self) -> Amount {
             // 🏋️ EXERCISE 3c: Return the supply vault balance
@@ -80,8 +105,8 @@ mod template {
 
         pub fn withdraw_confidential(
             &mut self,
-            fee: Bucket,
-            withdraw_proof: ConfidentialWithdrawProof,
+            _fee: Bucket,
+            _withdraw_proof: ConfidentialWithdrawProof,
         ) -> Bucket {
             // 🏋️ EXERCISE 6b: check fee amount and deposit then in the fee_vault. Withdraw requested amount from confidential vault and return the Bucket.
             //                Increment the counter.

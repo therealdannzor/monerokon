@@ -11,10 +11,23 @@ const INITIAL_SUPPLY: Amount = Amount(1_000_000);
 fn exercise_1_initial_states() {
     let mut test = TemplateTest::new(["."]);
 
-    let (output, _, _) = generate_confidential_proof(INITIAL_SUPPLY, None);
+    let template = test.get_module("Monerokon");
+    let num_args = template
+        .template_def()
+        .functions()
+        .iter()
+        .find(|f| f.name == "new")
+        .unwrap()
+        .arguments
+        .len();
+
     // Construct the component
-    let component_address: ComponentAddress =
-        test.call_function("Monerokon", "new", args![INITIAL_SUPPLY, output], vec![]);
+    let component_address: ComponentAddress = if num_args == 0 {
+        test.call_function("Monerokon", "new", args![], vec![])
+    } else {
+        let (output, _, _) = generate_confidential_proof(INITIAL_SUPPLY, None);
+        test.call_function("Monerokon", "new", args![INITIAL_SUPPLY, output], vec![])
+    };
 
     let counter: u32 = test.extract_component_value(component_address, "$.counter");
     assert_eq!(counter, 0, "Counter was not initialize to 0");
@@ -24,13 +37,26 @@ fn exercise_1_initial_states() {
 fn exercise_2_counter() {
     let mut test = TemplateTest::new(["."]);
 
+    let template = test.get_module("Monerokon");
+    let num_args = template
+        .template_def()
+        .functions()
+        .iter()
+        .find(|f| f.name == "new")
+        .unwrap()
+        .arguments
+        .len();
+
+    // Construct the component
+    let component_address: ComponentAddress = if num_args == 0 {
+        test.call_function("Monerokon", "new", args![], vec![])
+    } else {
+        let (output, _, _) = generate_confidential_proof(INITIAL_SUPPLY, None);
+        test.call_function("Monerokon", "new", args![INITIAL_SUPPLY, output], vec![])
+    };
+
     // Get proof of ownership for the component.
     let proof = test.get_test_proof();
-
-    let (output, _, _) = generate_confidential_proof(INITIAL_SUPPLY, None);
-    // Construct the component
-    let component_address: ComponentAddress =
-        test.call_function("Monerokon", "new", args![INITIAL_SUPPLY, output], vec![]);
 
     // Call `value` method on component
     let counter: u32 = test.call_method(component_address, "counter", args![], vec![proof.clone()]);

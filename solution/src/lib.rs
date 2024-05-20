@@ -36,7 +36,7 @@ mod template {
 
             // 🏋️ EXERCISE 5: Create a Non-Fungible resource with two NFTs in a new vault named 'nft_vault'
             let nfts = ResourceBuilder::non_fungible()
-                .add_metadata("name", "Monerokon NFTs")
+                .add_metadata("name", "Monerokon NFT")
                 .with_non_fungible(NonFungibleId::Uint64(1), &(), &())
                 .with_non_fungible(NonFungibleId::Uint64(2), &(), &())
                 .build_bucket();
