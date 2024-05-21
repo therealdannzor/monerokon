@@ -1,11 +1,13 @@
 use tari_template_lib::prelude::*;
 
+/// The flat fee for each withdraw
 const FEE: Amount = Amount(10);
 
 #[template]
 mod template {
     use super::*;
 
+    /// Defines the component state
     pub struct Monerokon {
         counter: u32,
         // 🏋️ EXERCISE 3b: Add two vault called 'supply_vault' and 'fee_vault'
@@ -21,6 +23,7 @@ mod template {
     // 🏋️ EXERCISE 1: Initialize component with a zero counter value
     // Delete this code block after exercise 1
     impl Monerokon {
+        /// Construct the component with no args
         pub fn new() -> Component<Self> {
             let state = Self {
                 // TODO set counter to 0
@@ -43,6 +46,7 @@ mod template {
     // Uncomment the following code block after completing exercise 2
     /*
     impl Monerokon {
+        /// Construct the component with an initial supply of fungible and confidential tokens.
         pub fn new(
             initial_supply: Amount,
             confidential_initial_supply: ConfidentialOutputStatement,
