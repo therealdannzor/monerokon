@@ -3,14 +3,13 @@ use tari_template_lib::prelude::*;
 /// The flat fee for each withdraw
 const FEE: Amount = Amount(10);
 
-#[template]
+// #[template]
 mod template {
     use super::*;
 
     /// Defines the component state
     pub struct Monerokon {
-        counter: u32,
-        // 🏋️ EXERCISE 3b: Add two vault called 'supply_vault' and 'fee_vault'
+        // 🏋️ EXERCISE 3b: Add two vaults called `supply_vault` and `fee_vault`
         // TODO
 
         // 🏋️ EXERCISE 5b: Create a Non-Fungible resource with two NFTs in a new vault named 'nft_vault'
@@ -20,31 +19,6 @@ mod template {
         // TODO
     }
 
-    // 🏋️ EXERCISE 1: Initialize component with a zero counter value
-    // Delete this code block after exercise 1
-    impl Monerokon {
-        /// Construct the component with no args
-        pub fn new() -> Component<Self> {
-            let state = Self {
-                // TODO set counter to 0
-            };
-
-            Component::new(state).create()
-        }
-
-        // 🏋️ EXERCISE 1: Implement method to return the counter value
-        pub fn counter(&self) -> u32 {
-            todo!()
-        }
-
-        // 🏋️ EXERCISE 1: Mutate some state! Increase the counter value by 1
-        pub fn increase(&mut self) {
-            todo!()
-        }
-    }
-
-    // Uncomment the following code block after completing exercise 2
-    /*
     impl Monerokon {
         /// Construct the component with an initial supply of fungible and confidential tokens.
         pub fn new(
@@ -61,8 +35,9 @@ mod template {
             // TODO
 
             let state = Self {
-                counter: 0,
-                // 🏋️ EXERCISE 3c: Deposit the initial tokens into a supply vault and create an empty fee vault
+                // 🏋️ EXERCISE 3c:
+                // 1. Deposit the initial tokens into a supply vault and,
+                // 2. create an empty XTR vault called `fee_vault`.
                 // TODO
             };
 
@@ -74,7 +49,6 @@ mod template {
                 // )
                 .create()
         }
-
 
         pub fn get_balance(&self) -> Amount {
             // 🏋️ EXERCISE 3c: Return the supply vault balance
@@ -109,7 +83,6 @@ mod template {
 
             let manager = ResourceManager::get(self.nft_vault.resource_address());
             todo!()
-
         }
 
         // 🏋️ EXERCISE 7c: Mint confidential tokens and deposit them in the confidential_vault
@@ -117,14 +90,5 @@ mod template {
             let manager = ResourceManager::get(self.confidential_vault.resource_address());
             todo!()
         }
-
-        pub fn counter(&self) -> u32 {
-            self.counter
-        }
-
-        pub fn increase(&mut self) {
-            self.counter += 1;
-        }
     }
-     */
 }

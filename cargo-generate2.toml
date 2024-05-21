@@ -1,2 +1,2 @@
 [template]
-subtemplates = ["exercise", "solution"]
+subtemplates = ["exercise-1", "exercise-2", "solution"]
