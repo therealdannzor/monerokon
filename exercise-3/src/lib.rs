@@ -9,72 +9,39 @@ mod template {
 
     /// Defines the component state
     pub struct Monerokon {
-        // 🏋️ EXERCISE 3b: Add two vaults called `supply_vault` and `fee_vault`
-        // TODO
-
-        // 🏋️ EXERCISE 5b: Create a Non-Fungible resource with two NFTs in a new vault named 'nft_vault'
-        // TODO
-
-        // 🏋️ EXERCISE 6b: Add a confidential vault called 'confidential_vault'
-        // TODO
+        fee_vault: Vault,
+        nft_vault: Vault,
     }
 
     impl Monerokon {
         /// Construct the component with an initial supply of fungible and confidential tokens.
-        pub fn new(
-            initial_supply: Amount,
-            confidential_initial_supply: ConfidentialOutputStatement,
-        ) -> Component<Self> {
-            // 🏋️ EXERCISE 3a: Create a fungible resource with an initial supply
-            // TODO
+        pub fn new(initial_nfts: Vec<NonFungibleId>) -> Component<Self> {
+            let initial_nfts = initial_nfts
+                .into_iter()
+                .map(|nft| (nft, (&(), &())))
+                .collect::<Vec<_>>();
 
-            // 🏋️ EXERCISE 5: Create a Non-Fungible resource with two NFTs in a new vault named 'nft_vault'
-            // TODO
-
-            // 🏋️ EXERCISE 6a: Create a confidential resource with an initial supply and add a vault to the component called 'confidential_vault'
-            // TODO
+            // TODO: Create a Non-Fungible resource with two NFTs in a new vault named 'nft_vault'
+            // let bucket = ResourceBuilder::non_fungible()
 
             let state = Self {
-                // 🏋️ EXERCISE 3c:
-                // 1. Deposit the initial tokens into a supply vault and,
-                // 2. create an empty XTR vault called `fee_vault`.
-                // TODO
+                nft_vault: Vault::from_bucket(bucket),
+                fee_vault: Vault::new_empty(XTR2),
             };
 
             Component::new(state)
-                // 🏋️ EXERCISE 4b: allow anyone to call the "withdraw" method
-                // .with_access_rules(
-                //     ComponentAccessRules::new()
-                // TODO
-                // )
+                .with_access_rules(
+                    ComponentAccessRules::new().add_method_rule("withdraw", AccessRule::AllowAll),
+                )
                 .create()
         }
 
-        pub fn get_balance(&self) -> Amount {
-            // 🏋️ EXERCISE 3c: Return the supply vault balance
-            todo!()
+        pub fn withdraw(&mut self, fee: Bucket, nft: NonFungibleId) -> Bucket {
+            assert!(fee.amount() >= FEE, "fee is too low");
+            self.fee_vault.deposit(fee);
+            // TODO: Withdraw requested token from NFT vault and return the Bucket.
         }
 
-        pub fn withdraw(&mut self, _fee: Bucket, _amount: Amount) -> Bucket {
-            // 🏋️ EXERCISE 4a: check fee amount and deposit in the fee_vault. Withdraw requested amount from supply vault and return the Bucket.
-            todo!()
-        }
-
-        pub fn withdraw_confidential(
-            &mut self,
-            _fee: Bucket,
-            _withdraw_proof: ConfidentialWithdrawProof,
-        ) -> Bucket {
-            // 🏋️ EXERCISE 6b: check fee amount and deposit then in the fee_vault. Withdraw requested amount from confidential vault and return the Bucket.
-            todo!()
-        }
-
-        // 🏋️ EXERCISE 7a: Mint fungible tokens and deposit them in the supply_vault
-        pub fn mint_fungible(&self, fungible_amount: Amount) {
-            todo!()
-        }
-
-        // 🏋️ EXERCISE 7b: Mint a fungible token with data and deposit it in the nft_vault
         pub fn mint_non_fungible(&self, nft: NonFungibleId) {
             #[derive(serde::Serialize)]
             struct MyData {
@@ -82,13 +49,7 @@ mod template {
             }
 
             let manager = ResourceManager::get(self.nft_vault.resource_address());
-            todo!()
-        }
-
-        // 🏋️ EXERCISE 7c: Mint confidential tokens and deposit them in the confidential_vault
-        pub fn mint_confidential(&self, confidential: ConfidentialOutputStatement) {
-            let manager = ResourceManager::get(self.confidential_vault.resource_address());
-            todo!()
+            // TODO: Mint an NFT with data and deposit it in the nft_vault
         }
     }
 }

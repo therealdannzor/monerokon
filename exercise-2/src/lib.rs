@@ -9,8 +9,7 @@ mod template {
 
     /// Defines the component state
     pub struct Monerokon {
-        // 🏋️ EXERCISE 2a: Add two vaults called `supply_vault` and `fee_vault`
-        // TODO
+        // TODO: Add two vaults called `supply_vault` and `fee_vault`
     }
 
     impl Monerokon {
@@ -19,28 +18,23 @@ mod template {
             initial_supply: Amount,
             confidential_initial_supply: ConfidentialOutputStatement,
         ) -> Component<Self> {
-            // 🏋️ EXERCISE 2b: Create a fungible resource with an initial supply
-            // TODO
-
+            // TODO: Create a fungible resource with an initial supply
 
             let state = Self {
-                // 🏋️ EXERCISE 2c:
+                // TODO:
                 // 1. Deposit the initial tokens into a supply vault and,
                 // 2. create an empty XTR vault called `fee_vault`.
-                // TODO
             };
 
             Component::new(state)
-                // 🏋️ EXERCISE 2d: allow anyone to call the "withdraw" method
-                // .with_access_rules(
-                //     ComponentAccessRules::new()
-                //  // TODO
-                // )
+                .with_access_rules(
+                    ComponentAccessRules::new(), // TODO: allow anyone to call the "withdraw" method
+                )
                 .create()
         }
 
         pub fn get_balance(&self) -> Amount {
-            // 🏋️ EXERCISE 2e: Return the supply vault balance
+            // TODO: Return the supply vault balance
             todo!()
         }
 

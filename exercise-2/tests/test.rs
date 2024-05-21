@@ -1,7 +1,4 @@
 use tari_template_lib::prelude::*;
-use tari_template_test_tooling::support::confidential::{
-    generate_confidential_proof,
-};
 use tari_template_test_tooling::TemplateTest;
 use tari_transaction::Transaction;
 
@@ -12,10 +9,8 @@ fn exercise_2_fungible_resource() {
     let mut test = TemplateTest::new(["."]);
 
     // Construct the component
-    let (output, _, _) = generate_confidential_proof(INITIAL_SUPPLY, None);
-    // Construct the component
     let component_address: ComponentAddress =
-        test.call_function("Monerokon", "new", args![INITIAL_SUPPLY, output], vec![]);
+        test.call_function("Monerokon", "new", args![INITIAL_SUPPLY], vec![]);
 
     let vault_id: VaultId = test.extract_component_value(component_address, "$.supply_vault");
     let vault = test.read_only_state_store().get_vault(&vault_id).unwrap();
@@ -44,9 +39,8 @@ fn exercise_2_withdraw_and_fees() {
     let mut test = TemplateTest::new(["."]);
 
     // Construct the component
-    let (output, _, _) = generate_confidential_proof(INITIAL_SUPPLY, None);
     let component_address: ComponentAddress =
-        test.call_function("Monerokon", "new", args![INITIAL_SUPPLY, output], vec![]);
+        test.call_function("Monerokon", "new", args![INITIAL_SUPPLY], vec![]);
 
     let (account, account_proof, account_secret) = test.create_funded_account();
 
@@ -97,4 +91,3 @@ fn exercise_2_withdraw_and_fees() {
     let vault = test.read_only_state_store().get_vault(&vault_id).unwrap();
     assert_eq!(vault.balance(), 10i64);
 }
-
