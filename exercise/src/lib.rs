@@ -19,6 +19,7 @@ mod template {
     }
 
     // 🏋️ EXERCISE 1: Initialize component with a zero counter value
+    // Delete this code block after exercise 1
     impl Monerokon {
         pub fn new() -> Component<Self> {
             let state = Self {
@@ -28,12 +29,12 @@ mod template {
             Component::new(state).create()
         }
 
-        // 🏋️ EXERCISE 2a: Implement method to return the counter value
+        // 🏋️ EXERCISE 1: Implement method to return the counter value
         pub fn counter(&self) -> u32 {
             todo!()
         }
 
-        // 🏋️ EXERCISE 2b: Mutate some state! Increase the counter value by 1
+        // 🏋️ EXERCISE 1: Mutate some state! Increase the counter value by 1
         pub fn increase(&mut self) {
             todo!()
         }
@@ -71,7 +72,6 @@ mod template {
         }
 
 
-
         pub fn get_balance(&self) -> Amount {
             // 🏋️ EXERCISE 3c: Return the supply vault balance
             todo!()
@@ -79,7 +79,6 @@ mod template {
 
         pub fn withdraw(&mut self, _fee: Bucket, _amount: Amount) -> Bucket {
             // 🏋️ EXERCISE 4a: check fee amount and deposit in the fee_vault. Withdraw requested amount from supply vault and return the Bucket.
-            //                Increment the counter.
             todo!()
         }
 
@@ -89,7 +88,29 @@ mod template {
             _withdraw_proof: ConfidentialWithdrawProof,
         ) -> Bucket {
             // 🏋️ EXERCISE 6b: check fee amount and deposit then in the fee_vault. Withdraw requested amount from confidential vault and return the Bucket.
-            //                Increment the counter.
+            todo!()
+        }
+
+        // 🏋️ EXERCISE 7a: Mint fungible tokens and deposit them in the supply_vault
+        pub fn mint_fungible(&self, fungible_amount: Amount) {
+            todo!()
+        }
+
+        // 🏋️ EXERCISE 7b: Mint a fungible token with data and deposit it in the nft_vault
+        pub fn mint_non_fungible(&self, nft: NonFungibleId) {
+            #[derive(serde::Serialize)]
+            struct MyData {
+                data: String,
+            }
+
+            let manager = ResourceManager::get(self.nft_vault.resource_address());
+            todo!()
+
+        }
+
+        // 🏋️ EXERCISE 7c: Mint confidential tokens and deposit them in the confidential_vault
+        pub fn mint_confidential(&self, confidential: ConfidentialOutputStatement) {
+            let manager = ResourceManager::get(self.confidential_vault.resource_address());
             todo!()
         }
 

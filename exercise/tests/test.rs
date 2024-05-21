@@ -160,9 +160,6 @@ fn exercise_4_withdraw_and_fees() {
     let vault_id: VaultId = test.extract_component_value(component_address, "$.fee_vault");
     let vault = test.read_only_state_store().get_vault(&vault_id).unwrap();
     assert_eq!(vault.balance(), 10i64);
-
-    let counter: u32 = test.extract_component_value(component_address, "$.counter");
-    assert_eq!(counter, 1);
 }
 
 #[test]
@@ -227,5 +224,59 @@ fn exercise_6_confidential() {
             .sign(&account_secret)
             .build(),
         vec![account_proof],
+    );
+}
+
+#[test]
+fn exercise_7_mint() {
+    let mut test = TemplateTest::new(["."]);
+
+    // Construct the component
+    let (output, _, _) = generate_confidential_proof(INITIAL_SUPPLY, None);
+    let component_address: ComponentAddress =
+        test.call_function("Monerokon", "new", args![INITIAL_SUPPLY, output], vec![]);
+
+    // Get proof of ownership for the component.
+    let proof = test.get_test_proof();
+
+    let (output, _, _) = generate_confidential_proof(INITIAL_SUPPLY, None);
+
+    // Transfer some coins into the account
+    test.execute_expect_success(
+        Transaction::builder()
+            .call_method(component_address, "mint_fungible", args![Amount(1000)])
+            .call_method(
+                component_address,
+                "mint_non_fungible",
+                args![NonFungibleId::from_string("MoneroKon")],
+            )
+            .call_method(component_address, "mint_confidential", args![output])
+            .sign(test.get_test_secret_key())
+            .build(),
+        vec![proof],
+    );
+
+    let supply_vault: VaultId = test.extract_component_value(component_address, "$.supply_vault");
+    let supply_vault = test
+        .read_only_state_store()
+        .get_vault(&supply_vault)
+        .unwrap();
+    let nft_vault: VaultId = test.extract_component_value(component_address, "$.nft_vault");
+    let nft_vault = test.read_only_state_store().get_vault(&nft_vault).unwrap();
+    let confidential_vault: VaultId =
+        test.extract_component_value(component_address, "$.confidential_vault");
+    let confidential_vault = test
+        .read_only_state_store()
+        .get_vault(&confidential_vault)
+        .unwrap();
+
+    assert_eq!(supply_vault.balance(), INITIAL_SUPPLY + 1000);
+    assert_eq!(nft_vault.balance(), 3i64);
+    assert_eq!(
+        confidential_vault
+            .get_confidential_commitments()
+            .unwrap()
+            .len(),
+        2
     );
 }

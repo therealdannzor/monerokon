@@ -25,6 +25,7 @@ mod template {
         ) -> Component<Self> {
             // Component::new(Self {
             // 🏋️ EXERCISE 1: Initialize component with a zero counter value
+            counter: 0,
             // }).create()
 
             // 🏋️ EXERCISE 3a: Create a fungible resource with an initial supply
@@ -90,6 +91,38 @@ mod template {
             self.counter += 1;
             self.confidential_vault
                 .withdraw_confidential(withdraw_proof)
+        }
+
+        // 🏋️ EXERCISE 7a: Mint fungible tokens and deposit them in the supply_vault
+        pub fn mint_fungible(&self, fungible_amount: Amount) {
+            let manager = ResourceManager::get(self.supply_vault.resource_address());
+            let bucket = manager.mint_fungible(fungible_amount);
+            self.supply_vault.deposit(bucket);
+        }
+
+        // 🏋️ EXERCISE 7b: Mint fungible tokens and deposit them in the nft_vault
+        pub fn mint_non_fungible(&self, nft: NonFungibleId) {
+            #[derive(serde::Serialize)]
+            struct MyData {
+                data: String,
+            }
+
+            let manager = ResourceManager::get(self.nft_vault.resource_address());
+            let bucket = manager.mint_non_fungible(
+                nft,
+                &(),
+                &MyData {
+                    data: "beep-boop".to_string(),
+                },
+            );
+            self.nft_vault.deposit(bucket);
+        }
+
+        // 🏋️ EXERCISE 7c: Mint confidential tokens and deposit them in the confidential_vault
+        pub fn mint_confidential(&self, confidential: ConfidentialOutputStatement) {
+            let manager = ResourceManager::get(self.confidential_vault.resource_address());
+            let bucket = manager.mint_confidential(confidential);
+            self.confidential_vault.deposit(bucket);
         }
 
         // 🏋️ EXERCISE 2a: Implement method to return the counter value
