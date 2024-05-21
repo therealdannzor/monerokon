@@ -5,8 +5,7 @@ authors = ["monerokon <nobody@users.noreply.github.com>"]
 edition = "2021"
 
 [dependencies]
-#tari_template_lib = { git = "https://github.com/tari-project/tari-dan.git", branch = "development" }
-tari_template_lib = { path = "../../../tari/dan/dan_layer/template_lib" }
+tari_template_lib = { git = "https://github.com/tari-project/tari-dan.git", branch = "development" }
 serde = "1.0"
 
 [profile.release]
@@ -20,8 +19,6 @@ strip = "debuginfo" # Strip debug info.
 crate-type = ["cdylib", "lib"]
 
 [dev-dependencies]
-#tari_template_test_tooling = { git = "https://github.com/tari-project/tari-dan.git", branch = "development" }
-#tari_transaction = { git = "https://github.com/tari-project/tari-dan.git", branch = "development" }
+tari_template_test_tooling = { git = "https://github.com/tari-project/tari-dan.git", branch = "development" }
+tari_transaction = { git = "https://github.com/tari-project/tari-dan.git", branch = "development" }
 
-tari_template_test_tooling = { path = "../../../tari/dan/dan_layer/template_test_tooling" }
-tari_transaction = { path = "../../../tari/dan/dan_layer/transaction" }
