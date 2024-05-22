@@ -19,7 +19,7 @@ fn exercise_3_nft_resource() {
 
     let vault_id: VaultId = test.extract_component_value(component_address, "$.nft_vault");
     let vault = test.read_only_state_store().get_vault(&vault_id).unwrap();
-    assert_eq!(vault.resource_type(), ResourceType::NonFungible);
+    assert_eq!(vault.resource_type(), ResourceType::NonFungible, "Resource type for `nft_vault` is not NonFungible. Use `ResourceBuilder::non_fungible()` to create the resource and deposit the bucket into `nft_vault`.");
     assert_eq!(vault.balance(), 2i64);
 
     let (account, account_proof, account_secret) = test.create_funded_account();

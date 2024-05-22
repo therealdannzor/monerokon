@@ -23,7 +23,7 @@ fn exercise_4_confidential_withdraw() {
     assert_eq!(
         vault.resource_type(),
         ResourceType::Confidential,
-        "confidential_vault is not confidential"
+      "Resource type for `confidential_vault` is not Confidential. Use `ResourceBuilder::confidential()` to create the resource and deposit the bucket into `confidential_vault`."
     );
 
     let WithdrawProofOutput {
@@ -87,11 +87,13 @@ fn exercise_4_confidential_mint() {
         .get_vault(&confidential_vault)
         .unwrap();
 
+    let num_commitments = confidential_vault
+        .get_confidential_commitments()
+        .expect("Confidential vault does not have any commitments after minting. Ensure that the `mint_confidential` method calls `ResourceManager::mint_confidential()` with the `mint` arg.")
+        .len();
     assert_eq!(
-        confidential_vault
-            .get_confidential_commitments()
-            .unwrap()
-            .len(),
-        2
+        num_commitments, 2,
+        "Expected 2 commitments in the confidential vault, found {}",
+        num_commitments
     );
 }

@@ -14,8 +14,12 @@ fn exercise_2_fungible_resource() {
 
     let vault_id: VaultId = test.extract_component_value(component_address, "$.supply_vault");
     let vault = test.read_only_state_store().get_vault(&vault_id).unwrap();
-    assert_eq!(vault.resource_type(), ResourceType::Fungible);
-    assert_ne!(*vault.resource_address(), XTR2);
+    assert_eq!(
+        vault.resource_type(),
+        ResourceType::Fungible,
+        "Resource type in supply_vault is not fungible. Use `ResourceBuilder::fungible()`"
+    );
+    assert_ne!(*vault.resource_address(), XTR2, "Resource address in supply_vault is XTR. Add the bucket of your new resource to the vault e.g `Vault::from_bucket(bucket)`");
 
     // Get proof of ownership for the component.
     let proof = test.get_test_proof();
@@ -27,11 +31,15 @@ fn exercise_2_fungible_resource() {
         args![],
         vec![proof.clone()],
     );
-    assert_eq!(value, INITIAL_SUPPLY);
+    assert_eq!(value, INITIAL_SUPPLY, "Balance is not equal to expected initial supply. Ensure the Resource initial supply is set correctly.");
 
     let vault_id: VaultId = test.extract_component_value(component_address, "$.fee_vault");
     let vault = test.read_only_state_store().get_vault(&vault_id).unwrap();
-    assert_eq!(*vault.resource_address(), XTR2);
+    assert_eq!(
+        *vault.resource_address(),
+        XTR2,
+        "Resource address in fee_vault is not XTR. Create an empty bucket"
+    );
 }
 
 #[test]
@@ -85,9 +93,9 @@ fn exercise_2_withdraw_and_fees() {
     );
 
     let balance = result.expect_return::<Amount>(5);
-    assert_eq!(balance, 100i64);
+    assert_eq!(balance, 100i64, "`supply_vault` balance is not equal to expected value after withdrawing 100 coins. Ensure that `withdraw` withdraws the given amount and that balance returns the balance of supply_vault.");
 
     let vault_id: VaultId = test.extract_component_value(component_address, "$.fee_vault");
     let vault = test.read_only_state_store().get_vault(&vault_id).unwrap();
-    assert_eq!(vault.balance(), 10i64);
+    assert_eq!(vault.balance(), 10i64, "fee_vault balance is not equal to expected value after paying 10 XTR in fees. Ensure that the fee is deposited into the fee_vault.");
 }
