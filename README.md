@@ -3,7 +3,6 @@
 ## Get started
 
 ```shell
-# Unfortunately, latest stable rust breaks the current
 rustup install 1.77
 rustup target add wasm32-unknown-unknown
 
