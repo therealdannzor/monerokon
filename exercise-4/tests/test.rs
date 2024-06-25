@@ -41,7 +41,7 @@ fn exercise_4_confidential_withdraw() {
     test.execute_expect_success(
         Transaction::builder()
             // Withdraw revealed fee funds
-            .call_method(account, "withdraw", args![XTR2, Amount(10)])
+            .call_method(account, "withdraw", args![XTR, Amount(10)])
             .put_last_instruction_output_on_workspace("fee")
             // Run withdraw_confidential on the component
             .call_method(

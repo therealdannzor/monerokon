@@ -16,11 +16,10 @@ mod template {
     impl Monerokon {
         /// Construct the component with an initial supply of fungible and confidential tokens.
         pub fn new(initial_supply: ConfidentialOutputStatement) -> Component<Self> {
-            // TODO: Create a confidential resource with an initial supply
-            // let bucket = ResourceBuilder::confidential()
+            let bucket = ResourceBuilder::confidential().initial_supply(initial_supply);
 
             let state = Self {
-                fee_vault: Vault::new_empty(XTR2),
+                fee_vault: Vault::new_empty(XTR),
                 confidential_vault: Vault::from_bucket(bucket),
             };
 
@@ -33,14 +32,15 @@ mod template {
 
         pub fn withdraw(&mut self, fee: Bucket, withdraw: ConfidentialWithdrawProof) -> Bucket {
             assert!(fee.amount() >= FEE, "fee is too low");
-            self.fee_vault.deposit(fee);
 
-            // TODO: Withdraw from confidential vault and return the Bucket.
+            self.fee_vault.deposit(fee);
+            self.confidential_vault.withdraw_confidential(withdraw)
         }
 
         pub fn mint_confidential(&self, mint: ConfidentialOutputStatement) {
             let manager = ResourceManager::get(self.confidential_vault.resource_address());
-            // TODO: Mint confidential tokens and deposit them in the confidential_vault
+            let bucket = manager.mint_confidential(mint);
+            self.confidential_vault.deposit(bucket);
         }
     }
 }

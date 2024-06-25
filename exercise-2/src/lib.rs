@@ -9,38 +9,37 @@ mod template {
 
     /// Defines the component state
     pub struct Monerokon {
-        // TODO: Add two vaults called `supply_vault` and `fee_vault`
+        supply_vault: Vault,
+        fee_vault: Vault,
     }
 
     impl Monerokon {
         /// Construct the component with an initial supply of fungible and confidential tokens.
-        pub fn new(
-            initial_supply: Amount,
-            confidential_initial_supply: ConfidentialOutputStatement,
-        ) -> Component<Self> {
-            // TODO: Create a fungible resource with an initial supply
+        pub fn new(initial_supply: Amount) -> Component<Self> {
+            let fungible = ResourceBuilder::fungible().initial_supply(initial_supply);
+            let sv = Vault::from_bucket(fungible);
+
+            let fv = Vault::new_empty(XTR);
 
             let state = Self {
-                // TODO:
-                // 1. Deposit the initial tokens into a supply vault and,
-                // 2. create an empty XTR vault called `fee_vault`.
+                supply_vault: sv,
+                fee_vault: fv,
             };
 
             Component::new(state)
-                .with_access_rules(
-                    ComponentAccessRules::new(), // TODO: allow anyone to call the "withdraw" method
-                )
+                .with_access_rules(ComponentAccessRules::allow_all())
                 .create()
         }
 
         pub fn get_balance(&self) -> Amount {
-            // TODO: Return the supply vault balance
-            todo!()
+            self.supply_vault.balance()
         }
 
         pub fn withdraw(&mut self, _fee: Bucket, _amount: Amount) -> Bucket {
-            // 🏋️ EXERCISE 2f: check fee amount and deposit in the fee_vault. Withdraw requested amount from supply vault and return the Bucket.
-            todo!()
+            assert!(_fee.amount() >= FEE);
+
+            self.fee_vault.deposit(_fee);
+            self.supply_vault.withdraw(_amount)
         }
     }
 }

@@ -27,7 +27,7 @@ fn exercise_3_nft_resource() {
     // Transfer some coins into the account
     test.execute_expect_success(
         Transaction::builder()
-            .call_method(account, "withdraw", args![XTR2, Amount(10)])
+            .call_method(account, "withdraw", args![XTR, Amount(10)])
             .put_last_instruction_output_on_workspace("fee")
             .call_method(
                 component_address,

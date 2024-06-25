@@ -21,12 +21,15 @@ mod template {
                 .map(|nft| (nft, (&(), &())))
                 .collect::<Vec<_>>();
 
-            // TODO: Create a Non-Fungible resource with two NFTs in a new vault named 'nft_vault'
-            // let bucket = ResourceBuilder::non_fungible()
+            let bucket = ResourceBuilder::non_fungible()
+                .with_token_symbol("MNROKON-NFT")
+                .mintable(AccessRule::AllowAll)
+                .burnable(AccessRule::AllowAll)
+                .initial_supply_with_data(initial_nfts);
 
             let state = Self {
                 nft_vault: Vault::from_bucket(bucket),
-                fee_vault: Vault::new_empty(XTR2),
+                fee_vault: Vault::new_empty(XTR),
             };
 
             Component::new(state)
@@ -36,20 +39,33 @@ mod template {
                 .create()
         }
 
-        pub fn withdraw(&mut self, fee: Bucket, nft: NonFungibleId) -> Bucket {
-            assert!(fee.amount() >= FEE, "fee is too low");
+        pub fn withdraw(&mut self, fee: Bucket, _nft: NonFungibleId) -> Bucket {
+            assert!(fee.clone().amount() >= FEE, "fee is too low");
+
             self.fee_vault.deposit(fee);
-            // TODO: Withdraw requested token from NFT vault and return the Bucket.
+            self.nft_vault.withdraw_non_fungible(_nft)
         }
 
-        pub fn mint_non_fungible(&self, nft: NonFungibleId) {
+        pub fn mint_non_fungible(&self, _nft: NonFungibleId) {
             #[derive(serde::Serialize)]
             struct MyData {
                 data: String,
             }
 
             let manager = ResourceManager::get(self.nft_vault.resource_address());
-            // TODO: Mint an NFT with data and deposit it in the nft_vault
+
+            let mut immutable = Metadata::new();
+            immutable.insert("name", "Monerokon");
+
+            let bucket = manager.mint_non_fungible(
+                _nft.clone(),
+                &immutable,
+                &MyData {
+                    data: "test".to_string(),
+                },
+            );
+
+            self.nft_vault.deposit(bucket);
         }
     }
 }
