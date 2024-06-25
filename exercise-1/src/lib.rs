@@ -12,20 +12,18 @@ mod template {
     impl Monerokon {
         /// Construct the component with no args
         pub fn new() -> Component<Self> {
-            let state = Self {
-                // TODO: Initialize component with a zero counter value
-            };
+            let state = Self { counter: 0 };
 
             // Create the component
             Component::new(state).create()
         }
 
         pub fn counter(&self) -> u32 {
-            todo!("Implement method to return the counter value")
+            self.counter
         }
 
         pub fn increase(&mut self) {
-            todo!("Mutate some state! Increase the counter value by 1")
+            self.counter += 1
         }
     }
 }

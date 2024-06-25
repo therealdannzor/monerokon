@@ -19,7 +19,7 @@ fn exercise_2_fungible_resource() {
         ResourceType::Fungible,
         "Resource type in supply_vault is not fungible. Use `ResourceBuilder::fungible()`"
     );
-    assert_ne!(*vault.resource_address(), XTR2, "Resource address in supply_vault is XTR. Add the bucket of your new resource to the vault e.g `Vault::from_bucket(bucket)`");
+    assert_ne!(*vault.resource_address(), XTR, "Resource address in supply_vault is XTR. Add the bucket of your new resource to the vault e.g `Vault::from_bucket(bucket)`");
 
     // Get proof of ownership for the component.
     let proof = test.get_test_proof();
@@ -37,7 +37,7 @@ fn exercise_2_fungible_resource() {
     let vault = test.read_only_state_store().get_vault(&vault_id).unwrap();
     assert_eq!(
         *vault.resource_address(),
-        XTR2,
+        XTR,
         "Resource address in fee_vault is not XTR. Create an empty bucket"
     );
 }
@@ -59,7 +59,7 @@ fn exercise_2_withdraw_and_fees() {
     // Check that the transaction rejects if the fee paid is too low
     test.execute_expect_failure(
         Transaction::builder()
-            .call_method(account, "withdraw", args![XTR2, Amount(9)])
+            .call_method(account, "withdraw", args![XTR, Amount(9)])
             .put_last_instruction_output_on_workspace("fee")
             .call_method(
                 component_address,
@@ -77,7 +77,7 @@ fn exercise_2_withdraw_and_fees() {
     // Transfer some coins into the account
     let result = test.execute_expect_success(
         Transaction::builder()
-            .call_method(account, "withdraw", args![XTR2, Amount(10)])
+            .call_method(account, "withdraw", args![XTR, Amount(10)])
             .put_last_instruction_output_on_workspace("fee")
             .call_method(
                 component_address,
